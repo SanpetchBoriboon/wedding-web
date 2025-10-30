@@ -1,0 +1,25 @@
+<div class="flex justify-center">
+  <div class="overflow-hidden relative bg-gray-50 p-4 rounded-lg">
+    <div
+      #scrollContainer
+      class="flex gap-4 cursor-grab overflow-x-auto scroll-smooth select-none"
+      (mousedown)="onDragStart($event)"
+      (mousemove)="onDragMove($event)"
+      (mouseup)="onDragEnd()"
+      (mouseleave)="onDragEnd()"
+    >
+      @if (imagesLocal.length) { @for (image of imagesLocal; track image; let i = $index) {
+      <mat-card class="shrink-0 p-4 m-4" [style.width.px]="cardWidth">
+        <div class="relative w-full overflow-hidden p-4" [style.height.px]="imageHeight">
+          <img [src]="image" [alt]="image" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+
+        <mat-card-content>
+          <h3 class="text-lg font-bold text-gray-800">{{ hashTag }}</h3>
+          <p class="text-sm text-gray-600 mt-2">#{{ i + 1 }}</p>
+        </mat-card-content>
+      </mat-card>
+      } }
+    </div>
+  </div>
+</div>
