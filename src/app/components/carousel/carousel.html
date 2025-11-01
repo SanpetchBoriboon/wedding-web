@@ -1,5 +1,6 @@
 <div class="flex justify-center">
   <div class="overflow-hidden relative bg-gray-50 p-4 rounded-lg">
+    @if (imagesLocal.length) { @if (!isMobile) {
     <div
       #scrollContainer
       class="flex gap-4 cursor-grab overflow-x-auto scroll-smooth select-none"
@@ -8,7 +9,7 @@
       (mouseup)="onDragEnd()"
       (mouseleave)="onDragEnd()"
     >
-      @if (imagesLocal.length) { @for (image of imagesLocal; track image; let i = $index) {
+      @for (image of imagesLocal; track image; let i = $index) {
       <mat-card class="shrink-0 p-4 m-4" [style.width.px]="cardWidth">
         <div class="relative w-full overflow-hidden p-4" [style.height.px]="imageHeight">
           <img [src]="image" [alt]="image" class="w-full h-full object-cover" loading="lazy" />
@@ -19,7 +20,33 @@
           <p class="text-sm text-gray-600 mt-2">#{{ i + 1 }}</p>
         </mat-card-content>
       </mat-card>
-      } }
+      }
     </div>
+    } } @if (isMobile) {
+    <div
+      class="relative w-full bg-gray-50 overflow-hidden rounded-lg"
+      [class.fade-active]="isFading"
+      style="overflow-x: hidden; touch-action: none"
+    >
+      <mat-card class="p-4 m-4 mx-auto" [style.width.px]="cardWidth">
+        <div class="relative w-full overflow-hidden p-4" [style.height.px]="imageHeight">
+          <img
+            [src]="imagesLocal[currentIndex]"
+            [alt]="imagesLocal[currentIndex]"
+            class="w-full h-full object-cover pointer-events-none select-none"
+            loading="lazy"
+          />
+        </div>
+
+        <mat-card-content>
+          <h3 class="text-lg font-bold text-gray-800">{{ hashTag }}</h3>
+          <p class="text-sm text-gray-600 mt-2">#{{ currentIndex + 1 }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="absolute left-0 top-0 w-1/2 h-full cursor-pointer" (click)="previous()"></div>
+      <div class="absolute right-0 top-0 w-1/2 h-full cursor-pointer" (click)="next()"></div>
+    </div>
+    }
   </div>
 </div>

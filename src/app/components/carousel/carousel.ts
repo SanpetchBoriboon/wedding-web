@@ -27,6 +27,8 @@ export class Carousel implements OnInit, AfterViewInit {
   private startX = 0;
   private scrollLeft = 0;
 
+  isMobile = false;
+
   hashTag = '#เบญจเมแต่งแล้วครับ';
 
   imagesLocal: string[] = [];
@@ -40,6 +42,9 @@ export class Carousel implements OnInit, AfterViewInit {
   imageHeight = 400;
 
   itemsPerView = 3;
+
+  currentIndex = 0;
+  isFading = false;
 
   async ngOnInit() {
     await this.loadAllImages();
@@ -57,16 +62,21 @@ export class Carousel implements OnInit, AfterViewInit {
   calculateDimensions() {
     const screenWidth = window.innerWidth;
 
-    // Mobile ≤460px
-    if (screenWidth <= 460) {
+    if (screenWidth <= 640) {
       this.itemsPerView = 1;
       this.gap = 0;
-      this.cardWidth = screenWidth;
+      this.cardWidth = screenWidth - 32;
+      this.isMobile = true;
       return;
     }
 
-    if (screenWidth < 1024) this.itemsPerView = 2;
-    else this.itemsPerView = 3;
+    if (screenWidth < 1024) {
+      this.itemsPerView = 2;
+    } else {
+      this.itemsPerView = 3;
+    }
+
+    this.isMobile = false;
 
     const maxContainerWidth = 1200;
     const containerPadding = 32;
@@ -100,13 +110,60 @@ export class Carousel implements OnInit, AfterViewInit {
       this.loading = true;
       this.error = null;
 
-      this.imagesLocal = weddingGallery.map((file) => {
-        return this.basePath + file;
-      });
+      this.imagesLocal = weddingGallery
+        .map((file) => {
+          return this.basePath + file;
+        })
+        .slice(0, 10);
     } catch (err) {
       console.error('Error loading images:', err);
       this.error = 'เกิดข้อผิดพลาดในการโหลดรูปภาพ กรุณาลองใหม่อีกครั้ง';
       this.loading = false;
     }
+  }
+
+  next() {
+    if (this.isMobile) {
+      this.triggerFade(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.imagesLocal.length;
+      });
+    } else {
+      this.currentIndex++;
+      this.transitionEnabled = true;
+      if (this.currentIndex >= this.imagesLocal.length) {
+        setTimeout(() => {
+          this.transitionEnabled = false;
+          this.currentIndex = 0;
+        }, 500);
+      }
+    }
+  }
+
+  previous() {
+    if (this.isMobile) {
+      this.triggerFade(() => {
+        this.currentIndex =
+          (this.currentIndex - 1 + this.imagesLocal.length) % this.imagesLocal.length;
+      });
+    } else {
+      if (this.currentIndex === 0) {
+        this.transitionEnabled = false;
+        this.currentIndex = this.imagesLocal.length;
+        setTimeout(() => {
+          this.transitionEnabled = true;
+          this.currentIndex--;
+        });
+      } else {
+        this.currentIndex--;
+      }
+    }
+  }
+
+  triggerFade(action: () => void) {
+    this.isFading = true;
+    setTimeout(() => {
+      action();
+      this.isFading = false;
+    }, 400);
   }
 }
