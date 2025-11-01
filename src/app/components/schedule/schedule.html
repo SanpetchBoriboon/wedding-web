@@ -1,0 +1,51 @@
+<div class="bg-[#FFF]">
+  <div class="p-8 w-full flex flex-col md:flex-row justify-between">
+    <div></div>
+    <div class="text-gray-700 py-8 flex flex-col w-full md:w-1/2 h-full">
+      <h1 class="text-6xl font-glacial-indifference font-thin mb-4">26.02.2026</h1>
+
+      <div class="flex flex-col gap-2 mb-4">
+        <div class="flex justify-start gap-4">
+          <span class="uppercase text-sm tracking-wider font-tt-hoves-pro-trial font-semibold">
+            Dress Code :
+          </span>
+          <div class="flex gap-2">
+            <span class="w-4 h-4 rounded-full bg-[#7E8B78]"></span>
+            <span class="w-4 h-4 rounded-full bg-[#BFC6B4]"></span>
+            <span class="w-4 h-4 rounded-full bg-[#E1E6D5]"></span>
+            <span class="w-4 h-4 rounded-full bg-[#F8F3C7]"></span>
+            <span class="w-4 h-4 rounded-full bg-[#E9C56E]"></span>
+          </div>
+        </div>
+      </div>
+
+      <a
+        href="https://maps.app.goo.gl/vBLgqq3iVPisNgBK9"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 mb-4"
+      >
+        <mat-icon>map</mat-icon>
+        <div class="flex flex-col leading-tight">
+          <p>สถานที่บ้านไม้สาย 3</p>
+        </div>
+      </a>
+
+      <p class="font-medium mb-4">#เบญจเมแต่งแล้วครับ</p>
+
+      <div class="flex flex-col space-y-2">
+        @for (schedule of schedulers; track schedule.schedule; let i = $index) {
+        <div class="flex justify-between w-full max-w-sm font-thin">
+          <div>{{ schedule.schedule }}</div>
+          <div>{{ schedule.time }}</div>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="py-8 w-full md:w-1/2 flex items-center justify-center">
+      <div class="w-full h-full aspect-video md:aspect-auto md:h-[450px]">
+        <app-map></app-map>
+      </div>
+    </div>
+  </div>
+</div>
